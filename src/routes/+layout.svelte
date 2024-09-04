@@ -1,5 +1,10 @@
 <script>
   import "../app.css";
+  import { StyleFromScheme } from "m3-svelte";
 </script>
+
+<StyleFromScheme
+  lightScheme={{"primary":4283523429,"onPrimary":4294967295,"primaryContainer":4292142825,"onPrimaryContainer":4282009933,"inversePrimary":4290300621,"secondary":4283916386,"onSecondary":4294967295,"secondaryContainer":4292601062,"onSecondaryContainer":4282337354,"tertiary":4283064935,"onTertiary":4294967295,"tertiaryContainer":4291684333,"onTertiaryContainer":4281551695,"error":4290386458,"onError":4294967295,"errorContainer":4294957782,"onErrorContainer":4287823882,"background":4294638073,"onBackground":4279966748,"surface":4294638073,"onSurface":4279966748,"surfaceVariant":4293124834,"onSurfaceVariant":4282795847,"inverseSurface":4281348145,"inverseOnSurface":4294111472,"outline":4286019447,"outlineVariant":4291282630,"shadow":4278190080,"scrim":4278190080,"surfaceDim":4292598490,"surfaceBright":4294638073,"surfaceContainerLowest":4294967295,"surfaceContainerLow":4294308851,"surfaceContainer":4293914093,"surfaceContainerHigh":4293519592,"surfaceContainerHighest":4293124834,"surfaceTint":4283523429}}
+  darkScheme={{"primary":4290300621,"onPrimary":4280496950,"primaryContainer":4282009933,"onPrimaryContainer":4292142825,"inversePrimary":4283523429,"secondary":4290758858,"onSecondary":4280889908,"secondaryContainer":4282337354,"onSecondaryContainer":4292601062,"tertiary":4289842128,"onTertiary":4280038456,"tertiaryContainer":4281551695,"onTertiaryContainer":4291684333,"error":4294948011,"onError":4285071365,"errorContainer":4287823882,"onErrorContainer":4294957782,"background":4279374868,"onBackground":4293124834,"surface":4279374868,"onSurface":4293124834,"surfaceVariant":4282795847,"onSurfaceVariant":4291282630,"inverseSurface":4293124834,"inverseOnSurface":4281348145,"outline":4287730065,"outlineVariant":4282795847,"shadow":4278190080,"scrim":4278190080,"surfaceDim":4279374868,"surfaceBright":4281874745,"surfaceContainerLowest":4279045647,"surfaceContainerLow":4279966748,"surfaceContainer":4280229920,"surfaceContainerHigh":4280887850,"surfaceContainerHighest":4281611573,"surfaceTint":4290300621}} />
 
 <slot />

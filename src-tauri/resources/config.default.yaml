@@ -1,0 +1,10 @@
+actions:
+  - name: create project
+    commands:
+      - npm create project
+      - npm i
+      - code .
+  - name: setup
+    commands:
+      - open chrome
+      - open terminal

@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body {
+    --m3-font: Space Grotesk, system-ui, sans-serif;
+  }
