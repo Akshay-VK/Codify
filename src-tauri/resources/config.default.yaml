@@ -1,10 +1,26 @@
+# All subfolders will be made in this directory
+baseLocation: C:/Users/dell/Documents/projects/dev
+# These are the subfolders/ subcategories in which projects are made
+# The 'name' will be used in a templates' 'type' argument
+folders:
+  - name: node.js
+    folder: 'nodejs'
+# Just sequences of actions to do
+# Eg. Setup workspace by opening Chrome, VS Code, Terminal etc.
 actions:
-  - name: create project
+  - name: demo action
+    arguments: # arguments are fields which require manualinput in order to run the action
+      - name
     commands:
-      - npm create project
-      - npm i
-      - code .
-  - name: setup
+      - echo this is a sample action
+      - echo hello $name #argument is specified like this
+# Here, templates for projects are made
+# They will be automatically be setup since u specify what the category of the project is and the steps
+# A new folder with the name specified will automatically be made and all commands are run in it
+projectTemplates:
+  - name: Basic node.js
+    arguments:
+      - name
+      - type
     commands:
-      - open chrome
-      - open terminal
+      - npm init -y

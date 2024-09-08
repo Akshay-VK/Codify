@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use serde::{Serialize, Deserialize};
+mod config;
 
 fn main() {
   tauri::Builder::default()
@@ -11,25 +11,14 @@ fn main() {
   
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct Config{
-  actions: Vec<Action>
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Action{
-  name: String,
-  commands: Vec<String>
-}
-
 #[tauri::command]
-fn file_test(handle: tauri::AppHandle) -> String {
+fn file_test(handle: tauri::AppHandle) -> Vec<String> {
   let resource_path = handle.path_resolver()
      .resolve_resource("resources/config.default.yaml")
      .expect("failed to resolve resource");
 
    let file = std::fs::File::open(&resource_path).unwrap();
-   let conf: Config = serde_yml::from_reader(file).unwrap();
+   let conf: config::Config = serde_yml::from_reader(file).unwrap();
 
-   conf.actions[1].name.clone()
+   conf.actions[0].commands.clone()
 }
