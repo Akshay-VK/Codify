@@ -1,19 +1,18 @@
-<script>
+<script lang='ts'>
   import { FAB } from 'm3-svelte';
   import iconEdit from "@ktibow/iconset-material-symbols/edit-outline";
+	import Action from './Action.svelte';
+  import type { TAction }  from '$lib/index.ts';
 
-  let actions=[
-    {'name':'abc'},
-    {'name':'Apple'}
-  ]; 
+  export let actions: TAction[];
   
 </script>
   
-<div class="p-3">
-  <h3 class="text-2xl font-semibold">Actions</h3>
+<div class="p-3  align-middle align-center items-center">
+  <div class="text-[#e4e0d3] text-[32px] font-bold font-['Space Grotesk']">Actions</div>
   <div class="grid grid-flow-row gap-3">
     {#each actions as action}
-        <FAB color='primary' size='normal' icon={iconEdit} text='{action.name}'/>
+        <Action {action}/>
     {/each}
   </div>
 </div>

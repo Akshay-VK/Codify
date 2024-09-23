@@ -5,13 +5,6 @@
 
   import App from './App.svelte'
 
-  let output=[];
-
-
-  async function getConfigData(){
-    output=await invoke('file_test')
-    console.log(output);
-  }
 </script>
 
 <!--

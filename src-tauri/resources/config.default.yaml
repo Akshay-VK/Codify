@@ -14,6 +14,11 @@ actions:
     commands:
       - echo this is a sample action
       - echo hello $name #argument is specified like this
+  - name: demo2
+    arguments:
+      - age
+    commands:
+      - echo Your age is $age
 # Here, templates for projects are made
 # They will be automatically be setup since u specify what the category of the project is and the steps
 # A new folder with the name specified will automatically be made and all commands are run in it

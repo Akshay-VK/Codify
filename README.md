@@ -1,38 +1,78 @@
-# create-svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+# Codify
 
-## Creating a project
+An app that simplifies task automation and presents it super clearly.
 
-If you're seeing this, you've probably already done this step. Congrats!
+It automatically converts automations to buttons with forms for input data etc.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
 
-# create a new project in my-app
-npm create svelte@latest my-app
+## Features
+
+- Light/dark mode toggle
+- Cross platform
+- Automation tasks turn into buttons
+- File preview
+- All automations in one place
+
+
+## Demo
+
+All Automations are written in a YAML file
+
+```yaml
+# All subfolders will be made in this directory
+baseLocation: C:/Users/dell/Documents/projects/dev
+# These are the subfolders/ subcategories in which projects are made
+# The 'name' will be used in a templates' 'type' argument
+folders:
+  - name: node.js
+    folder: 'nodejs'
+# Just sequences of actions to do
+# Eg. Setup workspace by opening Chrome, VS Code, Terminal etc.
+actions:
+  - name: demo action
+    arguments: # arguments are fields which require manualinput in order to run the action
+      - name
+    commands:
+      - echo this is a sample action
+      - echo hello $name #argument is specified like this
+  - name: demo2
+    arguments:
+      - age
+    commands:
+      - echo Your age is $age
+# Here, templates for projects are made
+# They will be automatically be setup since u specify what the category of the project is and the steps
+# A new folder with the name specified will automatically be made and all commands are run in it
+projectTemplates:
+  - name: Basic node.js
+    arguments:
+      - name
+      - type
+    commands:
+      - npm init -y
 ```
 
-## Developing
+On running the app, this gets read and rendered into the UI.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+...TODO
+## Documentation
 
-```bash
-npm run dev
+TODO
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Authors
 
-## Building
+- [@Akshay-VK](https://www.github.com/Akshay-VK)
 
-To create a production version of your app:
 
-```bash
-npm run build
-```
+## Acknowledgements
 
-You can preview the production build with `npm run preview`.
+ - [Tauri](https://tauri.dev)
+ - [SvelteKit](https://kit.svelte.dev)
+ - [Material UI for Svelte](https://ktibow.github.io/m3-svelte/)
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## License
+
+[GNU General Public License v3.0](https://github.com/Akshay-VK/Codify/blob/master/LICENSE)
+
