@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
   import Actions from './Actions.svelte';
   import { onMount } from 'svelte';
   import { invoke } from '@tauri-apps/api/tauri';
+	import Action from './Action.svelte';
 
-  let config=-1;
+  let config: any=-1;
   onMount(()=>{
     loadConfig();
   });
