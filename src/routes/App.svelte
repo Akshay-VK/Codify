@@ -20,7 +20,7 @@
   <div class="col-span-2 bg-[#191919] rounded-xl h-full">tools</div>
   <div class="col-span-7 bg-[#191919] rounded-xl h-full">main</div>
   <div class="col-span-2 bg-[#191919] rounded-xl h-full">
-    <Actions actions={config.actions}/>
+    <Actions actions={config.actions} baseLocation={config.baseLocation}/>
   </div>
 </div>
 {:else}

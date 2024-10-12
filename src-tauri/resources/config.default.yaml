@@ -1,5 +1,5 @@
 # All subfolders will be made in this directory
-baseLocation: C:/Users/dell/Documents/projects/dev
+baseLocation: C:/Users/dell/Documents/projects/dev/testfolder
 # These are the subfolders/ subcategories in which projects are made
 # The 'name' will be used in a templates' 'type' argument
 folders:
@@ -16,9 +16,9 @@ actions:
       - echo hello $name #argument is specified like this
   - name: demo2
     arguments:
-      - age
     commands:
-      - echo Your age is $age
+      - echo Your age is something
+      - copy NUL hello.txt
 # Here, templates for projects are made
 # They will be automatically be setup since u specify what the category of the project is and the steps
 # A new folder with the name specified will automatically be made and all commands are run in it

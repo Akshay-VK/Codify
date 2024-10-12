@@ -1,20 +1,28 @@
 <script lang="ts">
 	import { FAB } from 'm3-svelte';
 	import iconEdit from '@ktibow/iconset-material-symbols/edit-outline';
+    import { invoke } from '@tauri-apps/api/tauri';
 	import type { TAction } from '$lib';
 
 	export let action: TAction;
+    export let baseLocation: string;
 
     let switched=false;
     let sc='scale-0'
     let  tc='text-white';
 
-    function clicked(){
+    async function clicked(){
         console.log(action.name);
         switched=!switched;
         if(switched){
             sc='scale-[8]';
             tc='text-black';
+            //CALL ACTION
+            let output=await invoke('run_command',{baseLocation,action})
+            console.log(output);
+            sc='scale-0';
+            tc='text-white'
+            switched=false;
         }else{
             sc='scale-0';
             tc='text-white'

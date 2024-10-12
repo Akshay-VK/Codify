@@ -5,6 +5,7 @@
   import type { TAction }  from '$lib/index.ts';
 
   export let actions: TAction[];
+  export let baseLocation: string;
   
 </script>
   
@@ -12,7 +13,7 @@
   <div class="text-[#e4e0d3] text-[32px] font-bold font-['Space Grotesk']">Actions</div>
   <div class="grid grid-flow-row gap-3">
     {#each actions as action}
-        <Action {action}/>
+        <Action {action} {baseLocation}/>
     {/each}
   </div>
 </div>
