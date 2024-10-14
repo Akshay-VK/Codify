@@ -8,7 +8,7 @@ export type TConfig={
 
 export type TAction={
   name:string,
-  arcuments:string[],
+  arguments:string[],
   commands: string[]
 };
 

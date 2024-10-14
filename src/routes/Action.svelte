@@ -2,6 +2,7 @@
 	import { FAB } from 'm3-svelte';
 	import iconEdit from '@ktibow/iconset-material-symbols/edit-outline';
     import { invoke } from '@tauri-apps/api/tauri';
+    import { listen } from '@tauri-apps/api/event'
 	import type { TAction } from '$lib';
 
 	export let action: TAction;
@@ -11,6 +12,10 @@
     let sc='scale-0'
     let  tc='text-white';
 
+
+    let formPresent=action.arguments?.length>0;
+    let formVisible= false;
+
     async function clicked(){
         console.log(action.name);
         switched=!switched;
@@ -18,8 +23,13 @@
             sc='scale-[8]';
             tc='text-black';
             //CALL ACTION
-            let output=await invoke('run_command',{baseLocation,action})
-            console.log(output);
+            if(formPresent){
+                formVisible=true;
+            }else{
+                let output=await invoke('run_command_stream',{baseLocation,action})
+            }
+            //console.log(output);
+
             sc='scale-0';
             tc='text-white'
             switched=false;
@@ -28,6 +38,17 @@
             tc='text-white'
         }
     }
+
+    let logged="";
+    let n=0;
+    listen("output_data",(event: any)=>{
+        n++;
+        if(event.payload.data!=logged){
+            console.log(event.payload.data);
+            console.log(n);
+            logged=event.payload.data as string;
+        }
+    })
 </script>
 <div class="w-full font-['Space Grotesk']  bg-clip-content">
     <div class="bg-neutral-700 hover:bg-neutral-800 p-4 grid grid-cols-4 rounded-3xl items-center transition-colors  overflow-hidden bg-clip-padding">
@@ -52,3 +73,10 @@
         </button>
     </div>
 </div>
+{#if formVisible}
+<div class="relative bg-red">
+    <div class="absolute -left-48 -top-16 w-64 bg-white">
+        Form
+    </div>
+</div>
+{/if}

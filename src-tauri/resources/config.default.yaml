@@ -17,7 +17,8 @@ actions:
   - name: demo2
     arguments:
     commands:
-      - echo Your age is something
+      - echo A
+      - timeout 5 > NUL
       - copy NUL hello.txt
 # Here, templates for projects are made
 # They will be automatically be setup since u specify what the category of the project is and the steps

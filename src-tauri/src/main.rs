@@ -1,14 +1,18 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{fs,process::Command};
+use tauri::Window;
+
+use std::process::{Command, Stdio};
+use std::io::{BufRead, BufReader};
+use std::thread;
 
 mod config;
 use config::Action;
 
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![get_config,run_command])
+    .invoke_handler(tauri::generate_handler![get_config,run_command,run_command_stream])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
   
@@ -35,4 +39,30 @@ fn run_command(baseLocation:String, action: Action) -> String{
         .expect("Errorrr");
 
   String::from_utf8(output.stdout).unwrap()
+}
+
+#[derive(Clone, serde::Serialize)]
+struct OutputPayload{
+  data:String,
+}
+
+#[tauri::command]
+fn run_command_stream(window: Window, baseLocation:String, action: Action){
+  println!("Executing {}",action.name);
+  thread::spawn(move ||{
+    let mut command = Command::new("cmd")
+          .arg("/C")
+          .arg(format!("cd {} & {}",baseLocation,&action.commands.join(" & ")))
+          .stdout(Stdio::piped())
+          .spawn()
+          .expect("Errorrr");
+          
+    let stdout = command.stdout.take().unwrap();
+
+    // Stream output.
+    let lines = BufReader::new(stdout).lines();
+    for line in lines {
+      let _ = window.emit("output_data",OutputPayload{data:line.unwrap().to_string()});
+    }
+  });
 }
