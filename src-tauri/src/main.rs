@@ -47,12 +47,32 @@ struct OutputPayload{
 }
 
 #[tauri::command]
-fn run_command_stream(window: Window, baseLocation:String, action: Action){
+fn run_command_stream(window: Window, baseLocation:String, action: Action, args: Vec<String>){
   println!("Executing {}",action.name);
   thread::spawn(move ||{
+    let s = &action.commands.join(" & ");
+    
+    ////INSERT ARGUMENTS
+    let words: Vec<&str> =s.split(" ").collect();
+    let mut res="".to_string();
+    for word in words{
+      if word.starts_with("$"){
+        let parts: Vec<&str> =word.split(".").collect();
+        let m=&parts[0][1..];
+        let value = &args[action.arguments.iter().position(|x| x==m).unwrap()];
+        res=res+" "+value;
+        if parts.len() > 1{
+          res=res+"."+parts[1];
+        }
+      }else{
+        res = res+" "+word;
+      }
+    }
+    ////
+
     let mut command = Command::new("cmd")
           .arg("/C")
-          .arg(format!("cd {} & {}",baseLocation,&action.commands.join(" & ")))
+          .arg(format!("cd {} & {}",baseLocation,res))
           .stdout(Stdio::piped())
           .spawn()
           .expect("Errorrr");

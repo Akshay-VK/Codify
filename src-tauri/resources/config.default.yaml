@@ -11,15 +11,20 @@ actions:
   - name: demo action
     arguments: # arguments are fields which require manualinput in order to run the action
       - name
+      - age
     commands:
-      - echo this is a sample action
-      - echo hello $name #argument is specified like this
+      - echo heloo $name of age $age
+      - echo $age > $name #argument is specified like this
   - name: demo2
     arguments:
+      - name
     commands:
       - echo A
       - timeout 5 > NUL
-      - copy NUL hello.txt
+      - copy NUL $name.txt
+      - mkdir example
+      - cd example
+      - npm init -y
 # Here, templates for projects are made
 # They will be automatically be setup since u specify what the category of the project is and the steps
 # A new folder with the name specified will automatically be made and all commands are run in it

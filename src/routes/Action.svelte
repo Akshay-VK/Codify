@@ -5,6 +5,7 @@
     import { listen } from '@tauri-apps/api/event'
 	import type { TAction } from '$lib';
 
+
 	export let action: TAction;
     export let baseLocation: string;
 
@@ -14,7 +15,7 @@
 
 
     let formPresent=action.arguments?.length>0;
-    let formVisible= false;
+    let formelm: HTMLDialogElement;
 
     async function clicked(){
         console.log(action.name);
@@ -24,9 +25,10 @@
             tc='text-black';
             //CALL ACTION
             if(formPresent){
-                formVisible=true;
+                formelm.showModal()
             }else{
-                let output=await invoke('run_command_stream',{baseLocation,action})
+                let args =new Array<string>(0);
+                let output=await invoke('run_command_stream',{baseLocation,action,args})
             }
             //console.log(output);
 
@@ -49,6 +51,24 @@
             logged=event.payload.data as string;
         }
     })
+
+    let parameters:{[k:string]:string}={};
+
+    function closeFormElm(){
+        for(const p in parameters){
+            parameters[p]="";
+        }
+        formelm.close();
+    }
+    async function submitFormElm(){
+        let args=[];
+        for(let i = 0; i < action.arguments.length;i++){
+            args.push(parameters[action.arguments[i]]);
+        }
+        console.log(parameters,args,action);
+        let output=await invoke('run_command_stream',{baseLocation,action,args})
+        formelm.close();
+    }
 </script>
 <div class="w-full font-['Space Grotesk']  bg-clip-content">
     <div class="bg-neutral-700 hover:bg-neutral-800 p-4 grid grid-cols-4 rounded-3xl items-center transition-colors  overflow-hidden bg-clip-padding">
@@ -73,10 +93,19 @@
         </button>
     </div>
 </div>
-{#if formVisible}
-<div class="relative bg-red">
-    <div class="absolute -left-48 -top-16 w-64 bg-white">
-        Form
+<dialog bind:this={formelm} class="min-w-64 w-fit h-fit p-4 rounded-xl bg-neutral-800 shadow-lg shadow-neutral-900">
+    <div class="w-fit py-2">
+        <h3>{action.name} parameters</h3>
     </div>
-</div>
-{/if}
+    <div class="grid grid-flow-row gap-4 py-2">
+        {#each action.arguments as arg}
+            <div class="w-fit p-2 bg-neutral-800 rounded">
+                <input placeholder="{arg}" bind:value={parameters[arg]} class="bg-neutral-700 border-neutral-500 placeholder:text-neutral-500 placeholder:italic border shadow-sm focus:outline-none focus:border-white rounded-md p-2"/>
+            </div>
+        {/each}
+    </div>
+    <div class="w-full grid grid-flow-col gap-4">
+        <button on:click={()=>submitFormElm()} class="w-full p-2 rounded-md bg-green-700 hover:bg-green-500 text-green-200 ">Run</button>
+        <button on:click={()=>closeFormElm()} class="w-full p-2 rounded-md bg-neutral-800 hover:bg-neutral-700 text-neutral-500 border-neutral-500 border">Close</button>
+    </div>
+</dialog>
