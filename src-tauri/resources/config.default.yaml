@@ -22,8 +22,8 @@ actions:
       - echo A
       - timeout 5 > NUL
       - copy NUL $name.txt
-      - mkdir example
-      - cd example
+      - mkdir $name
+      - cd $name
       - npm init -y
 # Here, templates for projects are made
 # They will be automatically be setup since u specify what the category of the project is and the steps
