@@ -2,20 +2,46 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::Window;
+use tauri::{Menu, Submenu, MenuItem, CustomMenuItem};
 
 use std::process::{Command, Stdio};
 use std::io::{BufRead, BufReader};
 use std::thread;
 
+use serde::{Serialize,Deserialize};
+
 mod config;
 use config::Action;
 
+#[derive(Debug,Serialize,Deserialize)]
+struct Data{
+  pathToConfig: String
+}
+
 fn main() {
+  let submenu = Submenu::new("File",Menu::new()
+    .add_item(CustomMenuItem::new("quit".to_string(),"Quit"))
+    .add_item(CustomMenuItem::new("close".to_string(),"Close"))
+  );
+  let menu = Menu::new()
+    .add_submenu(submenu);
   //this generates the main app, adds the commands and builds it
   tauri::Builder::default()
+    .menu(menu)
+    .setup(|app| {
+      let res_path= app.path_resolver()
+          .resolve_resource("resources/data.json")
+          .expect("Error loading data.json");
+      let file = std::fs::File::open(&res_path).unwrap();
+      let data: Data = serde_json::from_reader(file).unwrap();
+      println!("{:?}",data);
+      
+      Ok(())
+    })
     .invoke_handler(tauri::generate_handler![get_config,run_command,run_command_stream])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
+  
   
 }
 
