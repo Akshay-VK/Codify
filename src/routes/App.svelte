@@ -7,9 +7,10 @@
 
   import {setContext} from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
+	import type { TOutputData } from '$lib';
 
-  export const log = writable(new Array<string>());
-  setContext<Writable<string[]>>('log',log);
+  export const log = writable(new Array<TOutputData>());
+  setContext<Writable<TOutputData[]>>('log',log);
 
   let config: any=-1;
   let yamlpath:any=-1;
@@ -30,7 +31,7 @@
   }
 </script>
 {#if config!=-1}
-<div class="font-['Space_Grotesk'] grid grid-rows-12 grid-cols-12 w-full h-en bg-[#0A1626] divide-[#203359] divide-x divide-y">  
+<div class="font-['Space_Grotesk'] grid grid-rows-12 grid-cols-12 w-full h-screen bg-[#0A1626] divide-[#203359] divide-x divide-y">  
   <div class="col-span-1 bg-[#0A1626]  h-screen">
     <button on:click={()=>editYAML()}>Edit</button>  
   </div>

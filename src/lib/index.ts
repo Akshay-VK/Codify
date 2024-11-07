@@ -22,3 +22,9 @@ export type TTemplate={
   arguments: string[],
   commands: string[]
 };
+
+export type TOutputData={
+    data:string,
+    line:number,
+    commandCount: number,
+  };

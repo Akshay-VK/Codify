@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { listen } from '@tauri-apps/api/event';
-	import type { TAction } from '$lib';
-	import {getContext} from 'svelte';    
+	import type { TAction, TOutputData } from '$lib';
+	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 
 	export let action: TAction;
@@ -13,11 +13,11 @@
 	let formelm: HTMLDialogElement;
 
 	async function clicked() {
-		console.log(action.name," clicked");
+		console.log(action.name, ' clicked');
 		switched = !switched;
 		if (switched) {
 			//CALL ACTION
-			if (action.arguments?.length>0) {
+			if (action.arguments?.length > 0) {
 				formelm.showModal();
 			} else {
 				let args = new Array<string>(0);
@@ -31,15 +31,15 @@
 
 	let logged = '';
 	let n = 0;
-	let logHandle = getContext<Writable<string[]>>('log');
+	let logHandle = getContext<Writable<TOutputData[]>>('log');
 	listen('output_data', (event: any) => {
 		n++;
 		//if (event.payload.data != logged) {
-        console.log(n,event.payload.data);
-        logged = event.payload.data as string;
-		logHandle.update((logs:string[])=>logs.concat(event.payload.data))
-        console.log($logHandle);
-		//}
+		console.log(n,event.payload);
+		//logHandle.update((logs: TOutputData[]) => (logs[logs.length-1].line == event.payload.line ? logs : logs.concat(event.payload)));
+		logHandle.update((logs: TOutputData[]) => (logs.concat(event.payload)));
+		console.log($logHandle);
+		//} "vfvfv"
 	});
 
 	let parameters: { [k: string]: string } = {};
@@ -61,20 +61,28 @@
 	}
 </script>
 
-<div class="w-full h-full font-['Space Grotesk'] bg-clip-content grid grid-cols-5 place-content-stretch place-items-center divide-x divide-y divide-[#203359] gap-0 hover:bg-[#C2D2F2] text-[#C2D2F2] hover:text-[#0A1626] text-[#C2D2F2] hover:divide-[#C2D2F2]">
+<div
+	class="w-full h-full font-['Space Grotesk'] bg-clip-content grid grid-cols-5 place-content-stretch place-items-center divide-x divide-y divide-[#203359] gap-0 hover:bg-[#C2D2F2] text-[#C2D2F2] hover:text-[#0A1626] text-[#C2D2F2] hover:divide-[#C2D2F2]"
+>
 	<div class="col-span-4 w-full divide-x divide-y divide-[#203359]">
 		{action.name}
 	</div>
-	<button class="col-span-1 w-full h-full grid place-items-center divide-x divide-y divide-[#203359]" on:click={clicked}>
+	<button
+		class="col-span-1 w-full h-full grid place-items-center divide-x divide-y divide-[#203359]"
+		on:click={clicked}
+	>
 		<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48">
-			<path fill="currentColor" stroke="currentColor" stroke-linejoin="round" stroke-width="4" d="M15 24V11.876l10.5 6.062L36 24l-10.5 6.062L15 36.124z" />
-		</svg>	
+			<path
+				fill="currentColor"
+				stroke="currentColor"
+				stroke-linejoin="round"
+				stroke-width="4"
+				d="M15 24V11.876l10.5 6.062L36 24l-10.5 6.062L15 36.124z"
+			/>
+		</svg>
 	</button>
 </div>
-<dialog
-	bind:this={formelm}
-	class="w-128 h-fit p-4 bg-[#0A1626] border border-1 border-[#203359]"
->
+<dialog bind:this={formelm} class="w-128 h-fit p-4 bg-[#0A1626] border border-1 border-[#203359]">
 	<div class="w-fit py-2">
 		<h3>{action.name} parameters</h3>
 	</div>

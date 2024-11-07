@@ -20,6 +20,7 @@ struct DataStore {
 
 struct Data {
     data: Mutex<DataStore>,
+    commandCount:Mutex<i32>
 }
 
 fn main() {
@@ -36,6 +37,7 @@ fn main() {
 
             app.manage(Data {
                 data: Mutex::new(dat),
+                commandCount:Mutex::new(0)
             });
 
             Ok(())
@@ -60,7 +62,7 @@ fn get_config(handle: tauri::AppHandle, state: State<Data>) -> config::Config {
         std::path::PathBuf::from(p.pathToConfig.clone())
     };
     if p.pathToConfig.len() > 0{
-        println!("YY");
+        println!("Config file present.");
     }
 
     let file = std::fs::File::open(&resource_path).unwrap();
@@ -92,6 +94,8 @@ fn run_command(baseLocation: String, action: Action) -> String {
 #[derive(Clone, serde::Serialize)]
 struct OutputPayload {
     data: String,
+    line: i32,
+    commandCount: i32
 }
 
 ///This is the main function that runs commands
@@ -100,7 +104,10 @@ struct OutputPayload {
 /// It runs the commands and waits for output
 /// As a string of output arrives, it emits just that line as a event to the frontend.
 #[tauri::command]
-fn run_command_stream(window: Window, baseLocation: String, action: Action, args: Vec<String>) {
+fn run_command_stream(window: Window, baseLocation: String, action: Action, args: Vec<String>, state: State<Data>) {
+    let mut commandCount=state.commandCount.lock().unwrap();
+    *commandCount=*commandCount+1;
+    let count=*commandCount;
     println!("Executing {}", action.name);
     // This creates a new thread for running the process
     // This is done so that the main app doesn't hang
@@ -136,7 +143,7 @@ fn run_command_stream(window: Window, baseLocation: String, action: Action, args
                 res = res + " " + word;
             }
         }
-        println!("{}", &res);
+        println!("Final command: {}", &res);
 
         // Here the command is spawned
         let mut command = Command::new("cmd")
@@ -154,13 +161,18 @@ fn run_command_stream(window: Window, baseLocation: String, action: Action, args
         //Here we make a buffer to read the continuously arriving output and emit it as events with the output line as payload.
         let stdout = command.stdout.take().unwrap();
         let lines = BufReader::new(stdout).lines();
+
+        let mut lineno=0;
         for line in lines {
             let pl = line.unwrap().to_string();
+            println!("Read output: {}",&pl);
             if pl.contains("Ctrl-C") || pl.contains("Ctrl+C") || pl.contains("^C") {
                 return;
             }
-            let _ = window.emit("output_data", OutputPayload { data: pl });
+            let _ = window.emit("output_data", OutputPayload { data: pl, line:lineno, commandCount: count });
+            lineno+=1;
         }
+        println!("Command complete.");
     });
 }
 
