@@ -9,20 +9,15 @@
 	export let baseLocation: string;
 
 	let switched = false;
-	let sc = 'scale-0';
-	let tc = 'text-white';
 
-	let formPresent = action.arguments?.length > 0;
 	let formelm: HTMLDialogElement;
 
 	async function clicked() {
-		console.log(action.name);
+		console.log(action.name," clicked");
 		switched = !switched;
 		if (switched) {
-			sc = 'scale-[8]';
-			tc = 'text-black';
 			//CALL ACTION
-			if (formPresent) {
+			if (action.arguments?.length>0) {
 				formelm.showModal();
 			} else {
 				let args = new Array<string>(0);
@@ -30,12 +25,7 @@
 			}
 			//console.log(output);
 
-			sc = 'scale-0';
-			tc = 'text-white';
 			switched = false;
-		} else {
-			sc = 'scale-0';
-			tc = 'text-white';
 		}
 	}
 
@@ -48,7 +38,7 @@
         console.log(n,event.payload.data);
         logged = event.payload.data as string;
 		logHandle.update((logs:string[])=>logs.concat(event.payload.data))
-        
+        console.log($logHandle);
 		//}
 	});
 
@@ -71,59 +61,30 @@
 	}
 </script>
 
-<div class="w-full font-['Space Grotesk'] bg-clip-content">
-	<div
-		class="bg-neutral-700 hover:bg-neutral-800 p-4 grid grid-cols-4 rounded-3xl items-center transition-colors overflow-hidden bg-clip-padding"
-	>
-		<div class="z-50 col-span-3 text-center align-text-middle h-full {tc} transition-colors">
-			{action.name}
-		</div>
-		<button class="col-span-1 relative" on:click={clicked}>
-			<div class="z-50">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="2em"
-					height="2em"
-					viewBox="0 0 48 48"
-					class="bg-neutral-700 rounded-full z-50"
-				>
-					<defs>
-						<mask id="ipSPlay0">
-							<g fill="black" stroke-linejoin="round" stroke-width="4">
-								<path
-									fill="#fff"
-									stroke="#fff"
-									d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"
-								/>
-								<path
-									fill="#000"
-									stroke="#000"
-									d="M20 24v-6.928l6 3.464L32 24l-6 3.464l-6 3.464z"
-								/>
-							</g>
-						</mask>
-					</defs>
-					<path fill="white" d="M0 0h48v48H0z" mask="url(#ipSPlay0)" />
-				</svg>
-			</div>
-			<div class="z-0 absolute inset-0 col-span-1 bg-white {sc} transition-transform">ab</div>
-		</button>
+<div class="w-full h-full font-['Space Grotesk'] bg-clip-content grid grid-cols-5 place-content-stretch place-items-center divide-x divide-y divide-[#203359] gap-0 hover:bg-[#C2D2F2] text-[#C2D2F2] hover:text-[#0A1626] text-[#C2D2F2] hover:divide-[#C2D2F2]">
+	<div class="col-span-4 w-full divide-x divide-y divide-[#203359]">
+		{action.name}
 	</div>
+	<button class="col-span-1 w-full h-full grid place-items-center divide-x divide-y divide-[#203359]" on:click={clicked}>
+		<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48">
+			<path fill="currentColor" stroke="currentColor" stroke-linejoin="round" stroke-width="4" d="M15 24V11.876l10.5 6.062L36 24l-10.5 6.062L15 36.124z" />
+		</svg>	
+	</button>
 </div>
 <dialog
 	bind:this={formelm}
-	class="min-w-64 w-fit h-fit p-4 rounded-xl bg-neutral-800 shadow-lg shadow-neutral-900"
+	class="w-128 h-fit p-4 bg-[#0A1626] border border-1 border-[#203359]"
 >
 	<div class="w-fit py-2">
 		<h3>{action.name} parameters</h3>
 	</div>
-	<div class="grid grid-flow-row gap-4 py-2">
+	<div class="grid grid-flow-row py-2">
 		{#each action.arguments as arg}
-			<div class="w-fit p-2 bg-neutral-800 rounded">
+			<div class="w-fit p-2 bg-[#0A1626]">
 				<input
 					placeholder={arg}
 					bind:value={parameters[arg]}
-					class="bg-neutral-700 border-neutral-500 placeholder:text-neutral-500 placeholder:italic border shadow-sm focus:outline-none focus:border-white rounded-md p-2"
+					class="bg-[#0A1626] border-neutral-500 placeholder:text-neutral-500 placeholder:italic border shadow-sm focus:outline-none focus:border-white rounded-md p-2"
 				/>
 			</div>
 		{/each}
@@ -131,11 +92,11 @@
 	<div class="w-full grid grid-flow-col gap-4">
 		<button
 			on:click={() => submitFormElm()}
-			class="w-full p-2 rounded-md bg-green-700 hover:bg-green-500 text-green-200">Run</button
+			class="w-full h-full m-2 bg-green-700 hover:bg-green-500 text-green-200">Run</button
 		>
 		<button
 			on:click={() => closeFormElm()}
-			class="w-full p-2 rounded-md bg-neutral-800 hover:bg-neutral-700 text-neutral-500 border-neutral-500 border"
+			class="w-full h-full m-2 bg-[#0A1626] hover:bg-neutral-700 text-neutral-500 border-neutral-500 border"
 			>Close</button
 		>
 	</div>

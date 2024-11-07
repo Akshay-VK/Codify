@@ -9,11 +9,9 @@
   
 </script>
   
-<div class="p-3  align-middle align-center items-center">
-  <div class="text-[#e4e0d3] text-[32px] font-bold font-['Space Grotesk']">Actions</div>
-  <div class="grid grid-flow-row gap-3">
+<div class="h-full w-full text-center align-text-middle py-4 align-center grid grid-rows-12 items-center divide-[#203359] divide-x divide-y">
+  <div class="text-[#C2D2F2] text-2xl font-['Space Grotesk'] w-full h-full">Actions</div>
     {#each actions as action}
         <Action {action} {baseLocation}/>
     {/each}
-  </div>
 </div>

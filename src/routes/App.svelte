@@ -30,13 +30,13 @@
   }
 </script>
 {#if config!=-1}
-<div class="font-['Space_Grotesk'] grid grid-rows-1 grid-cols-12 gap-2 w-full h-screen bg-[#151515]">  
-  <div class="col-span-1 bg-[#191919] rounded-xl h-full">
+<div class="font-['Space_Grotesk'] grid grid-rows-12 grid-cols-12 w-full h-en bg-[#0A1626] divide-[#203359] divide-x divide-y">  
+  <div class="col-span-1 bg-[#0A1626]  h-screen">
     <button on:click={()=>editYAML()}>Edit</button>  
   </div>
-  <div class="col-span-2 bg-[#191919] rounded-xl h-full">tools</div>
-  <div class="col-span-7 bg-[#191919] rounded-xl h-full"><Main/></div>
-  <div class="col-span-2 bg-[#191919] rounded-xl h-full">
+  <div class="col-span-2 bg-[#0A1626]  h-screen">tools</div>
+  <div class="col-span-7 bg-[#0A1626]  h-screen"><Main/></div>
+  <div class="col-span-2 bg-[#0A1626]  h-screen">
     <Actions actions={config.actions} baseLocation={config.baseLocation}/>
   </div>
 </div>
