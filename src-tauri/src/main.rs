@@ -105,6 +105,8 @@ struct OutputPayload {
 /// As a string of output arrives, it emits just that line as a event to the frontend.
 #[tauri::command]
 fn run_command_stream(window: Window, baseLocation: String, action: Action, args: Vec<String>, state: State<Data>) {
+    //Here we get the count of the command executed
+    //This is used later to filter outputs in the frontend
     let mut commandCount=state.commandCount.lock().unwrap();
     *commandCount=*commandCount+1;
     let count=*commandCount;
@@ -162,10 +164,13 @@ fn run_command_stream(window: Window, baseLocation: String, action: Action, args
         let stdout = command.stdout.take().unwrap();
         let lines = BufReader::new(stdout).lines();
 
-        let mut lineno=0;
+        let mut lineno=1;
         for line in lines {
             let pl = line.unwrap().to_string();
             println!("Read output: {}",&pl);
+            //We check for Ctrl-C (or anything similar) to check for proceses that stopped but didn't exit
+            //This may be because of an error or some kind of server running
+            //These are exited immediately
             if pl.contains("Ctrl-C") || pl.contains("Ctrl+C") || pl.contains("^C") {
                 return;
             }
