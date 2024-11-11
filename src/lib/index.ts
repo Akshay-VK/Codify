@@ -28,3 +28,9 @@ export type TOutputData={
     line:number,
     commandCount: number,
   };
+
+export type TYAMLOutputData={
+  config:TConfig,
+  success:boolean,
+  msg:string,
+}

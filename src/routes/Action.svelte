@@ -104,8 +104,8 @@
 		>
 		<button
 			on:click={() => closeFormElm()}
-			class="w-full h-full m-2 bg-[#0A1626] hover:bg-neutral-700 text-neutral-500 border-neutral-500 border"
-			>Close</button
+			class="w-full h-full m-2 bg-[#0A1626] hover:border-[#C2D2F2] hover:text-[#C2D2F2] text-[#203359] border-[#203359] border"
+		>Close</button
 		>
 	</div>
 </dialog>

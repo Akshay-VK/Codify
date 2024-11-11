@@ -14,6 +14,10 @@
     "allowlist": {
       "fs": {
         "scope": ["$RESOURCE/resources/*"]
+      },
+      "dialog": {
+        "open": true,
+        "save": true
       }
     },
     "bundle": {

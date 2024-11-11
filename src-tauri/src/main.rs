@@ -46,7 +46,8 @@ fn main() {
             get_config,
             run_command,
             run_command_stream,
-            state_test
+            state_test,
+            change_yaml
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -55,7 +56,7 @@ fn main() {
 ///This command reads the specified YAML file and builds it according to types in config.rs and finally returns it
 #[tauri::command]
 fn get_config(handle: tauri::AppHandle, state: State<Data>) -> config::Config {
-    let mut p = state.data.lock().unwrap();
+    let p = state.data.lock().unwrap();
     let resource_path = if p.pathToConfig.len() <=0 {
         handle.path_resolver().resolve_resource("resources/config.default.yaml").expect("failed to resolve resource config.default.yaml")
     } else {
@@ -183,6 +184,45 @@ fn run_command_stream(window: Window, baseLocation: String, action: Action, args
 
 #[tauri::command]
 fn state_test(state: State<Data>) -> String {
-    let mut d = state.data.lock().unwrap();
+    let d = state.data.lock().unwrap();
     (*d.pathToConfig).to_string()
+}
+
+
+#[derive(serde::Serialize)]
+struct YAMLChangePayload{
+    config: config::Config,
+    success:bool,
+    msg:String
+}
+
+#[tauri::command]
+fn change_yaml(handle: tauri::AppHandle, path: String, state:State<Data>)-> YAMLChangePayload{
+    println!("Path selected: {}",&path);
+
+    let p = state.data.lock().unwrap();
+    let resource_path = if p.pathToConfig.len() <=0 {
+        handle.path_resolver().resolve_resource("resources/config.default.yaml").expect("failed to resolve resource config.default.yaml")
+    } else {
+        std::path::PathBuf::from(p.pathToConfig.clone())
+    };
+    if p.pathToConfig.len() > 0{
+        println!("Config file present.");
+    }
+
+    let def_file = std::fs::File::open(&resource_path).unwrap();
+    let def_conf: config::Config = serde_yml::from_reader(def_file).unwrap();
+
+    let file = std::fs::File::open(std::path::PathBuf::from(path.clone())).unwrap();
+    let conf = serde_yml::from_reader(file);
+    let res: YAMLChangePayload= match conf{
+        Err(e) => {
+            println!("Error handled: {}",&e.to_string()); 
+            return YAMLChangePayload{config:def_conf,success:false,msg:e.to_string()}
+        }
+        Ok(c) => YAMLChangePayload{config:c,success:true,msg:"".to_string()}
+    };
+    //let res: YAMLChangePayload = YAMLChangePayload{config:conf,success:true,msg:"".to_string()};
+
+    res
 }
