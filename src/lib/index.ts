@@ -3,7 +3,7 @@ export type TConfig={
   baseLocation: string,
   folders: TFolder[],
   actions: TAction[],
-  projectTemplates:TTemplate[]
+  procedures:TTemplate[]
 };
 
 export type TAction={

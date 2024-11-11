@@ -5,7 +5,7 @@ pub struct Config {
     pub baseLocation: String,
     pub folders: Vec<Folder>,
     pub actions: Vec<Action>,
-    pub projectTemplates: Vec<Template>,
+    pub procedures: Vec<Template>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
