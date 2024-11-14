@@ -77,6 +77,7 @@ fn get_config(handle: tauri::AppHandle, state: State<Data>) -> config::Config {
 /// It also doesn't support arguments
 fn run_command(baseLocation: String, action: Action) -> String {
     println!("Executing {}", action.name);
+    // This is wrong as it only accounts for windows
     let output = Command::new("cmd")
         .arg("/C")
         .arg(format!(
@@ -148,9 +149,15 @@ fn run_command_stream(window: Window, baseLocation: String, action: Action, args
         }
         println!("Final command: {}", &res);
 
+        //We need to take account of different OS
+        let t = if cfg!(target_os="windows"){
+            ["cmd","/C"]
+        }else{
+            ["sh","-c"]
+        };
         // Here the command is spawned
-        let mut command = Command::new("cmd")
-            .arg("/C")
+        let mut command = Command::new(t[0])
+            .arg(t[1])
             //We must first change to the base directory as each 'command' is independent and all of them run independently.
             // For example, command A makes a folder, makes a file in that folder and writes data to it
             //Command B makes a folder and in it makes a npm project and adds a library
@@ -200,7 +207,7 @@ struct YAMLChangePayload{
 fn change_yaml(handle: tauri::AppHandle, path: String, state:State<Data>)-> YAMLChangePayload{
     println!("Path selected: {}",&path);
 
-    let p = state.data.lock().unwrap();
+    let mut p = state.data.lock().unwrap();
     let resource_path = if p.pathToConfig.len() <=0 {
         handle.path_resolver().resolve_resource("resources/config.default.yaml").expect("failed to resolve resource config.default.yaml")
     } else {
@@ -220,7 +227,17 @@ fn change_yaml(handle: tauri::AppHandle, path: String, state:State<Data>)-> YAML
             println!("Error handled: {}",&e.to_string()); 
             return YAMLChangePayload{config:def_conf,success:false,msg:e.to_string()}
         }
-        Ok(c) => YAMLChangePayload{config:c,success:true,msg:"".to_string()}
+        Ok(c) => {
+            p.pathToConfig=path;
+            let res_path = handle
+                .path_resolver()
+                .resolve_resource("resources/data.json")
+                .expect("Error loading data.json");
+            let dataToWrite = serde_json::to_string(&*p).unwrap();
+            println!("New data.json to write: {}",&dataToWrite);
+            std::fs::write(res_path,dataToWrite);
+            return YAMLChangePayload{config:c,success:true,msg:"".to_string()}
+        }
     };
     //let res: YAMLChangePayload = YAMLChangePayload{config:conf,success:true,msg:"".to_string()};
 
