@@ -33,7 +33,7 @@
 
 {#if $logHandle.length > 0}
 <TabWrapper>
-	<TabHead>
+	<TabHead fullType={false}>
         {#each {length:(($logHandle)[$logHandle.length-1].commandCount)} as _,j}
             <TabHeadItem id={j+1} on:click={handleClick(j+1)} {activeTabValue}>Output {j+1}</TabHeadItem>
         {/each}

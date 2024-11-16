@@ -1,7 +1,7 @@
 <script lang="ts">
   export let activeTabValue;
   export let id;
-  export let contentDivClass = 'p-4 bg-[#071222] text-[#C2D2F2] overflow-hidden text-ellipsis h-full';
+  export let contentDivClass = 'p-4 bg-[#071222] text-[#C2D2F2] overflow-hidden text-ellipsis h-full row-span-11';
 </script>
 
 {#if activeTabValue === id}
