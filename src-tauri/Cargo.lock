@@ -71,6 +71,7 @@ dependencies = [
  "serde_yml",
  "tauri",
  "tauri-build",
+ "walkdir",
 ]
 
 [[package]]

@@ -10,6 +10,8 @@ use std::thread;
 
 use serde::{Deserialize, Serialize};
 
+use walkdir::WalkDir;
+
 mod config;
 use config::Action;
 
@@ -68,6 +70,9 @@ fn get_config(handle: tauri::AppHandle, state: State<Data>) -> config::Config {
 
     let file = std::fs::File::open(&resource_path).unwrap();
     let conf: config::Config = serde_yml::from_reader(file).unwrap();
+    for entry in WalkDir::new(&conf.baseLocation).max_depth(1) {
+        println!("{}", entry.unwrap().path().display());
+    }
     conf
 }
 
