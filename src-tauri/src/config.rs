@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use std::sync::Mutex;
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     pub baseLocation: String,
@@ -26,4 +28,14 @@ pub struct Template {
     pub name: String,
     pub arguments: Vec<String>,
     pub commands: Vec<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DataStore {
+    pub pathToConfig: String,
+}
+
+pub struct Data {
+    pub data: Mutex<DataStore>,
+    pub commandCount:Mutex<i32>
 }
