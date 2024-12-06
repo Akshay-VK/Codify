@@ -39,3 +39,20 @@ pub struct Data {
     pub data: Mutex<DataStore>,
     pub commandCount:Mutex<i32>
 }
+
+#[derive(Debug,Deserialize,Serialize)]
+pub struct FolderData{
+    pub path: String,
+    pub files: Vec<FileData>,
+    pub folders: Vec<Subfolder>
+}
+
+#[derive(Debug,Deserialize,Serialize)]
+pub struct Subfolder{
+    pub path: String
+}
+
+#[derive(Debug,Deserialize,Serialize)]
+pub struct FileData{
+    pub path: String
+}

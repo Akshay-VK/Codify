@@ -5,12 +5,11 @@ use tauri::{Manager, State};
 
 use std::sync::Mutex;
 
-use walkdir::WalkDir;
 
 mod config;
-use config::{Data,DataStore};
+use config::{Data,DataStore,FolderData,Subfolder,FileData};
 
-mod file_change;
+mod files;
 mod commands;
 
 fn main() {
@@ -37,7 +36,8 @@ fn main() {
             commands::run_command,
             commands::run_command_stream,
             state_test,
-            file_change::change_yaml
+            files::change_yaml,
+            files::dir_data
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -58,12 +58,8 @@ fn get_config(handle: tauri::AppHandle, state: State<Data>) -> config::Config {
 
     let file = std::fs::File::open(&resource_path).unwrap();
     let conf: config::Config = serde_yml::from_reader(file).unwrap();
-    for entry in WalkDir::new(&conf.baseLocation).max_depth(1).into_iter().filter_map(|e| e.ok()) {
-        if entry.file_type().is_dir(){
-            print!("DIR:");
-        }
-        println!("{}", entry.path().display());
-    }
+
+    
     conf
 }
 #[tauri::command]

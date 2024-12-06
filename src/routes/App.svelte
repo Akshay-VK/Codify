@@ -68,7 +68,7 @@
             <TabHeadItem fullType={true} id={2} on:click={handleClick(2)} {activeTabValue}><div class="">Search</div></TabHeadItem>
     	</TabHead>            
       <TabContentItem id={1} on:click={handleClick(1)} {activeTabValue}>
-        <Files/>
+        <Files path={config.baseLocation}/>
       </TabContentItem>
       <TabContentItem id={2} on:click={handleClick(2)} {activeTabValue}>
         <Search/>
