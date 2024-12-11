@@ -34,3 +34,17 @@ export type TYAMLOutputData={
   success:boolean,
   msg:string,
 }
+
+export type TFolderData={
+    path: string,
+    files: TFileData[],
+    folders: TSubfolder[]
+}
+
+export type TSubfolder={
+    path: string
+}
+
+export type TFileData={
+    path: string
+}
