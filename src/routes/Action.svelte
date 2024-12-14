@@ -62,13 +62,13 @@
 </script>
 
 <div
-	class="w-full h-full font-['Space Grotesk'] bg-clip-content grid grid-cols-5 place-content-stretch place-items-center divide-x divide-y divide-[#203359] gap-0 hover:bg-[#C2D2F2] text-[#C2D2F2] hover:text-[#0A1626] text-[#C2D2F2] hover:divide-[#C2D2F2]"
+	class="w-full h-full font-['Space Grotesk'] bg-clip-content grid grid-cols-5 place-content-stretch place-items-center gap-0 hover:bg-[#C2D2F2] text-[#C2D2F2] hover:text-[#0A1626] text-[#C2D2F2] hover:divide-[#C2D2F2]"
 >
-	<div class="col-span-4 w-full divide-x divide-y divide-[#203359]">
+	<div class="col-span-4 w-full ">
 		{action.name}
 	</div>
 	<button
-		class="col-span-1 w-full h-full grid place-items-center divide-x divide-y divide-[#203359]"
+		class="col-span-1 w-full h-full grid place-items-center "
 		on:click={clicked}
 	>
 		<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 48 48">

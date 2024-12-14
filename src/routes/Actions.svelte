@@ -9,9 +9,10 @@
   
 </script>
   
-<div class="h-full w-full place-content-stretch place-items-center text-center align-text-middle align-center grid grid-rows-12 items-center divide-[#203359] divide-x divide-y">
+<div class="h-full w-full place-content-stretch place-items-center text-center align-text-middle align-center grid grid-rows-12 items-center divide-[#203359] divide-y">
   <div class="text-[#C2D2F2] text-lg font-['Space Grotesk'] place-content-stretch text-center place-items-center align-text-middle w-full h-full grid">Actions</div>
     {#each actions as action}
         <Action {action} {baseLocation}/>
     {/each}
+    <div class="h-full w-full"></div>
 </div>

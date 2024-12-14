@@ -60,21 +60,22 @@
 </script>
 {#if config!=-1}
 <div class="font-['Space_Grotesk'] grid grid-rows-12 grid-cols-12 w-full h-svh bg-[#0A1626] divide-[#203359] divide-x divide-y overflow-hidden">  
-  <div class="col-span-3 bg-[#0A1626]  h-screen relative text-[#C2D2F2]">
-     
-    <TabWrapper>
+  <div class="col-span-3 bg-[#0A1626]  h-screen relative text-[#C2D2F2] divide-y divide-[#203359]">
+    <div></div>
+     <Search/>
+    <!-- <TabWrapper> REMOVING FILE EXPLORER FOR NOW. SEARH IS MORE USEFUL. EXPLORER CAN BE IN A LATER RELEASE
     	<TabHead fullType={true}>
             <TabHeadItem fullType={true} id={1} on:click={handleClick(1)} {activeTabValue}><div class="">Files</div></TabHeadItem>
-            <TabHeadItem fullType={true} id={2} on:click={handleClick(2)} {activeTabValue}><div class="">Search</div></TabHeadItem>
+            <TabHeadItem fullType={true} id={1} on:click={handleClick(1)} {activeTabValue}><div class="">Search</div></TabHeadItem>
     	</TabHead>            
       <TabContentItem id={1} on:click={handleClick(1)} {activeTabValue}>
         <Files path={config.baseLocation}/>
       </TabContentItem>
-      <TabContentItem id={2} on:click={handleClick(2)} {activeTabValue}>
+      <TabContentItem id={1} on:click={handleClick(1)} {activeTabValue}>
         <Search/>
       </TabContentItem>
       
-    </TabWrapper>
+    </TabWrapper> -->
   </div>
   <div class="col-span-7 bg-[#0A1626]  h-screen"><Main/></div>
   <div class="col-span-2 bg-[#0A1626]  h-screen relative divide-y divide-[#203359]">
