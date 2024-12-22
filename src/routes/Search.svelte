@@ -1,20 +1,23 @@
 <script lang="ts">
+    import { invoke } from '@tauri-apps/api/tauri';
 
     type SearchForm={
         name: string,
         extension: string,
-        type: string,
+        searchtype: string,
         beginfrom: string
     };
     let form: SearchForm={
         name:"",
         extension:"",
-        type:"",
+        searchtype:"",
         beginfrom:""
     }
     function search(e: Event){
         console.log(e);
         console.log(form);
+        invoke('search',form);
+
     }
 </script>
 
@@ -38,19 +41,19 @@
             <legend class="text-sm row-span-1 place-content-center px-2">Type</legend>
             <div class="row-span-3 grid grid-rows-2 grid-cols-2 grid-flow-row">
                 <div class="w-full h-full place-content-center">
-                    <input type="radio" id="any" name="type" value="any" bind:group={form.type} checked class="bg-[#0A1626]"/>
+                    <input type="radio" id="any" name="type" value="any" bind:group={form.searchtype} checked class="bg-[#0A1626]"/>
                     <label for="any">Any</label>
                 </div>
                 <div class="w-full h-full place-content-center">
-                    <input type="radio" id="anyfile" name="type" value="anyfile" bind:group={form.type} class="bg-[#0A1626]"/>
+                    <input type="radio" id="anyfile" name="type" value="anyfile" bind:group={form.searchtype} class="bg-[#0A1626]"/>
                     <label for="anyfile">Any file</label>
                 </div>
                 <div class="w-full h-full place-content-center">
-                    <input type="radio" id="dotfile" name="type" value="dotfile" bind:group={form.type} class="bg-[#0A1626]"/>
+                    <input type="radio" id="dotfile" name="type" value="dotfile" bind:group={form.searchtype} class="bg-[#0A1626]"/>
                     <label for="dotfile"> Dot file</label>
                 </div>
                 <div class="w-full h-full place-content-center">
-                    <input type="radio" id="folder" name="type" value="folder" bind:group={form.type} class="bg-[#0A1626]"/>
+                    <input type="radio" id="folder" name="type" value="folder" bind:group={form.searchtype} class="bg-[#0A1626]"/>
                     <label for="folder">Folder</label>
                 </div>
             </div>

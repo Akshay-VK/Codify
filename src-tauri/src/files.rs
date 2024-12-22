@@ -1,9 +1,11 @@
 use tauri::State;
 
-use walkdir::WalkDir;
+use walkdir::{WalkDir,DirEntry};
 
 use crate::config;
 use config::{Data,FolderData,Subfolder,FileData};
+
+use rayon::prelude::*;
 
 #[derive(serde::Serialize)]
 pub struct YAMLChangePayload{
@@ -78,5 +80,37 @@ pub fn dir_data(path: String)->FolderData{
         path,
         files,
         folders
+    }
+}
+
+fn thefilter(e: &DirEntry, name: String, extension: String, searchtype: String)->bool{
+    if searchtype=="folder"{
+        return e.metadata().expect("ERROR lol").file_type().is_dir();
+    }
+    else{
+        if !e.metadata().expect("ERROR lol").file_type().is_dir() {
+            if searchtype=="dotfile"{
+                return e.file_name().to_str().map(|s| s.starts_with(&(".".to_owned()+&extension))).expect("ERROR lol")
+            }else{
+                if e.file_name().to_str().map(|s| {
+                    s.starts_with(&name) && s.ends_with(&extension)
+                }).expect("ERROR lol"){
+                    return true;
+                }
+            }
+        }
+    }
+    false
+}
+
+#[tauri::command]
+pub fn search(name: String, extension: String, searchtype: String, beginfrom: String){
+    let path = if beginfrom!=""{
+        beginfrom
+    }else{
+        "C:/".to_string()
+    };
+    for entry in WalkDir::new(&path).into_iter().filter_map(|e| e.ok()).filter(|e| thefilter(&e,name.clone(),extension.clone(),searchtype.clone())){
+        println!("{}",entry.path().display());
     }
 }

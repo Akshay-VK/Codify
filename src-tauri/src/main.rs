@@ -37,7 +37,8 @@ fn main() {
             commands::run_command_stream,
             state_test,
             files::change_yaml,
-            files::dir_data
+            files::dir_data,
+            files::search
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
